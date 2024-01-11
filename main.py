@@ -42,6 +42,10 @@ def get_name(type):
         friendly_text = "Plastic (oranje) bak"
     elif type_text == "PAPER":
         friendly_text = "Papier (blauwe) bak"
+    elif type_text == "TREE":
+        friendly_text = "Kerstboom"
+    else:
+        friendly_text = type_text
     return f"{friendly_text} aan straat"
 
 def get_calendar(file_path: str | None = None) -> Calendar:
