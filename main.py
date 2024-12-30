@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from dataclass_wizard import YAMLWizard
 from ics import Calendar, Event, DisplayAlarm
 import requests
@@ -8,12 +8,27 @@ from datetime import timedelta, datetime
 class Config(YAMLWizard):
     company_code: str
     address_id: str
-    start_date: str
-    end_date: str
+    start_date: str = None
+    end_date: str = None
+    next_year: bool = False
+
+    @property
+    def start_date_value(self):
+        if self.start_date:
+            return self.start_date
+        year = datetime.now().year + 1 if self.next_year else datetime.now().year
+        return f"{year}-01-01"
+
+    @property
+    def end_date_value(self):
+        if self.end_date:
+            return self.end_date
+        year = datetime.now().year + 1 if self.next_year else datetime.now().year
+        return f"{year}-12-31"
 
     @property
     def api_parameters(self):
-        return f"companyCode={self.company_code}&uniqueAddressID={self.address_id}&startDate={self.start_date}&endDate={self.end_date}"
+        return f"companyCode={self.company_code}&uniqueAddressID={self.address_id}&startDate={self.start_date_value}&endDate={self.end_date_value}"
 
 def get_pickup_dates(config: Config):
     data = config.api_parameters
