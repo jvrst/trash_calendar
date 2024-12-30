@@ -83,10 +83,12 @@ if __name__ == "__main__":
 
     trash_types = get_pickup_dates(config)
     calendar = get_calendar()
+
     print(config)
 
     for type in trash_types:
         name = get_name(type)
         add_pickup_dates(type["pickupDates"], name, calendar)
 
-    update_ics_file(calendar, f"trash-{datetime.now().replace(microsecond=0).isoformat()}.ics")
+    update_ics_file(calendar, f"trash-{config.start_date_value}_to_{config.end_date_value}.ics")
+
